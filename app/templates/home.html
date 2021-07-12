@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>Dobrodosli na nas sajt!</h1>
+    </head>
+    <body>
+        <p>
+            Aleksandar Simic, Luka Zivanovic
+        </p>
+        <hr>
+        <p>
+           {% for t in lista %}
+            Temperatura je {{t.temperatura}}
+            <br/>
+            {% endfor %}
+        </p>
+    </body>
+</html>
