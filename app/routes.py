@@ -1,5 +1,7 @@
 from app import app
 from flask import render_template
+from app import db
+from app.models import Measurement
 
 lista = [
         {
@@ -13,7 +15,10 @@ lista = [
         }
     ]
 
+
+
 @app.route("/")
 def hello_world():
-    return render_template("home.html", lista=lista)
+    data = db.session.query(Measurement).all()
+    return render_template("home.html", data=data)
 
