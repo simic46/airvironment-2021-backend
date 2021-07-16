@@ -23,10 +23,7 @@ measurement_pagination_schema = MeasurementPaginationSchema()
 def get_all():
     # page = int(request.args.get("page", PAGE))
     # per_page = int(request.args.get("per_page", PER_PAGE))
-    # all=request.args.get('all')
-    #
-    # if all=='123':
-    #     return {"asdf" : 1}
+
     schema_load = measurement_meta_schema.load(request.args.to_dict())
     measurements = db.session.query(Measurement).\
         paginate(per_page=schema_load.get('per_page'), page=schema_load.get('page'))

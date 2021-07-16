@@ -36,23 +36,37 @@ class MeasurementPatchSchema(Schema):
 
 
 class MeasurementMetaSchema(Schema):
-    page = fields.Integer(required=False, deafult=PER_PAGE, missing=PAGE)
-    pollution = fields.Integer(required=False, missing=PER_PAGE, default=PAGE)
-    humidity = fields.Integer(required=False, missing=0, default=0)
+    page = fields.Integer(required=False, deafult=PAGE, missing=PAGE)
+    per_page = fields.Integer(required=False, missing=PER_PAGE, default=PER_PAGE)
+    total = fields.Integer(required=False, missing=0, default=0)
 
+
+# class MeasurementPaginationSchema(Schema):
+#     meta = fields.Method('get_meta')
+#     results = fields.Method('get_results')
+#
+#     @staticmethod
+#     def get_meta(data):
+#         response = dict()
+#         response["total"] = data.total
+#         response["page"] = data.page
+#         response["per_page"] = data.per_page
+#         return MeasurementMetaSchema().dump(response)
+#
+#     @staticmethod
+#     def get_results(data):
+#         return MeasurementResponseSchema(many=True).dump(data.items)
 
 class MeasurementPaginationSchema(Schema):
     meta = fields.Method('get_meta')
-    response = fields.Method('get_results')
+    items = fields.List(fields.Nested(MeasurementResponseSchema), data_key="response")
+    # - item je lista objekata tipa MRS ()
+    # - a Nested nam govori da je ugnjezdeno
 
     @staticmethod
     def get_meta(data):
-        response = dict()
-        response["total"] = data.total
-        response["page"] = data.page
-        response["per_page"] = data.per_page
-        return MeasurementMetaSchema().dump(response)
-
-    @staticmethod
-    def get_results(data):
-        return MeasurementResponseSchema(many=True).dump(data.items)
+        meta = dict()
+        meta["total"] = data.total
+        meta["page"] = data.page
+        meta["per_page"] = data.per_page
+        return MeasurementMetaSchema().dump(meta)
